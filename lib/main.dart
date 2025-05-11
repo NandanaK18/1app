@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/login_screen.dart';
-// hello
+// hello world
 void main() {
   runApp(const NutritionTrackerApp());
 }
