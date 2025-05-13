@@ -25,13 +25,11 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
   late FixedExtentScrollController monthController;
   late FixedExtentScrollController dayController;
   late FixedExtentScrollController yearController;
-  
-  // Default to current date - 30 years
+    // Default to current date - 30 years
   late DateTime selectedDate;
   
-  // Calculated age
+  // Calculated age in years
   int ageYears = 0;
-  int ageMonths = 0;
 
   // Lists for the pickers
   final List<String> months = [
@@ -100,8 +98,7 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
       _calculateAge();
     });
   }
-  
-  // Calculate age based on the selected date
+    // Calculate age based on the selected date
   void _calculateAge() {
     final now = DateTime.now();
     final difference = now.difference(selectedDate);
@@ -109,9 +106,7 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
     // Simple calculation for age in years
     ageYears = (difference.inDays / 365.25).floor();
     
-    // Calculate remaining months
-    final ageInMonths = difference.inDays ~/ 30.44; // Approximate days per month
-    ageMonths = ageInMonths % 12;
+    // We're not calculating months anymore since we only display years
   }
   
   @override
@@ -155,8 +150,7 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
                     border: Border.all(color: Colors.grey.shade200),
                   ),
                   child: Column(
-                    children: [
-                      Text(
+                    children: [                      Text(
                         'Your Age',
                         style: TextStyle(
                           fontSize: 16,
@@ -166,7 +160,7 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        '$ageYears years${ageMonths > 0 ? ', $ageMonths months' : ''}',
+                        '$ageYears years',
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -322,10 +316,9 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
+                      child: ElevatedButton(                        onPressed: () {
                           // TODO: Navigate to the next screen or complete onboarding
-                          print('Selected birthdate: ${selectedDate.toString()}, Age: $ageYears years, $ageMonths months');
+                          print('Selected birthdate: ${selectedDate.toString()}, Age: $ageYears years');
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
