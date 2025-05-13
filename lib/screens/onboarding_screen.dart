@@ -70,7 +70,7 @@ class OnboardingScreen extends StatelessWidget {
                       ),
                     ),
                     child: const Text(
-                      'Get Started',
+                      'Dive In!',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,

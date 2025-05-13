@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'advanced_settings_screen.dart';
+import 'target_weight_selection_screen.dart';
 
 class GoalSelectionScreen extends StatefulWidget {
   final String gender;
@@ -202,21 +203,42 @@ class _GoalSelectionScreenState extends State<GoalSelectionScreen> {
                             (goal) => goal['id'] == selectedGoal
                           )['title'];
                           
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => AdvancedSettingsScreen(
-                                gender: widget.gender,
-                                weight: widget.weight,
-                                isWeightInKg: widget.isWeightInKg,
-                                height: widget.height,
-                                isHeightInCm: widget.isHeightInCm,
-                                age: widget.age,
-                                activityLevel: widget.activityLevel,
-                                goal: selectedGoalTitle,
+                          if (selectedGoal == 'maintain_weight') {
+                            // Go directly to advanced settings for maintain weight
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AdvancedSettingsScreen(
+                                  gender: widget.gender,
+                                  weight: widget.weight,
+                                  isWeightInKg: widget.isWeightInKg,
+                                  height: widget.height,
+                                  isHeightInCm: widget.isHeightInCm,
+                                  age: widget.age,
+                                  activityLevel: widget.activityLevel,
+                                  goal: selectedGoalTitle,
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          } else {
+                            // Go to target weight selection for gain/lose weight
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TargetWeightSelectionScreen(
+                                  gender: widget.gender,
+                                  weight: widget.weight,
+                                  isWeightInKg: widget.isWeightInKg,
+                                  height: widget.height,
+                                  isHeightInCm: widget.isHeightInCm,
+                                  birthDate: widget.birthDate,
+                                  age: widget.age,
+                                  activityLevel: widget.activityLevel,
+                                  goal: selectedGoalTitle,
+                                ),
+                              ),
+                            );
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
