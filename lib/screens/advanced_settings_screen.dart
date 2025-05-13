@@ -1,7 +1,27 @@
 import 'package:flutter/material.dart';
+import 'summary_screen.dart';
 
 class AdvancedSettingsScreen extends StatefulWidget {
-  const AdvancedSettingsScreen({Key? key}) : super(key: key);
+  final String gender;
+  final double weight;
+  final bool isWeightInKg;
+  final double height;
+  final bool isHeightInCm;
+  final int age;
+  final String activityLevel;
+  final String goal;
+
+  const AdvancedSettingsScreen({
+    Key? key,
+    required this.gender,
+    required this.weight,
+    required this.isWeightInKg,
+    required this.height,
+    required this.isHeightInCm,
+    required this.age,
+    required this.activityLevel,
+    required this.goal,
+  }) : super(key: key);
 
   @override
   State<AdvancedSettingsScreen> createState() => _AdvancedSettingsScreenState();
@@ -383,10 +403,27 @@ class _AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                     ),
                   ),
                   const SizedBox(width: 16),
-                  Expanded(
-                    child: ElevatedButton(
+                  Expanded(                    child: ElevatedButton(
                       onPressed: () {
-                        // TODO: Navigate to next screen
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SummaryScreen(
+                              gender: widget.gender,
+                              weight: widget.weight,
+                              isWeightInKg: widget.isWeightInKg,
+                              height: widget.height,
+                              isHeightInCm: widget.isHeightInCm,
+                              age: widget.age,
+                              isAthlete: isAthlete,
+                              bodyFatPercentage: showBodyFatSlider ? bodyFatPercentage : null,
+                              activityLevel: widget.activityLevel,
+                              goal: widget.goal,
+                              proteinRatio: proteinRatio,
+                              fatRatio: fatPercentage,
+                            ),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,

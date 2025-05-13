@@ -195,11 +195,26 @@ class _GoalSelectionScreenState extends State<GoalSelectionScreen> {
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: ElevatedButton(                          onPressed: () {
+                      child: ElevatedButton(
+                        onPressed: () {
+                          // Get the selected goal title
+                          final selectedGoalTitle = goals.firstWhere(
+                            (goal) => goal['id'] == selectedGoal
+                          )['title'];
+                          
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const AdvancedSettingsScreen(),
+                              builder: (context) => AdvancedSettingsScreen(
+                                gender: widget.gender,
+                                weight: widget.weight,
+                                isWeightInKg: widget.isWeightInKg,
+                                height: widget.height,
+                                isHeightInCm: widget.isHeightInCm,
+                                age: widget.age,
+                                activityLevel: widget.activityLevel,
+                                goal: selectedGoalTitle,
+                              ),
                             ),
                           );
                         },

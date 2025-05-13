@@ -131,7 +131,7 @@ class _WeightSelectionScreenState extends State<WeightSelectionScreen> {
                   child: Container(
                     decoration: BoxDecoration(
                       color: Colors.grey.shade100,
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(70),
                     ),
                     child: ToggleButtons(
                       constraints: const BoxConstraints(minWidth: 60, minHeight: 36),

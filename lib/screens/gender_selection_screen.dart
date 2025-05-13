@@ -50,10 +50,10 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                         context,
                         icon: Icons.male,
                         label: 'Male',
-                        isSelected: selectedGender == 'male',
+                        isSelected: selectedGender == 'Male',
                         onTap: () {
                           setState(() {
-                            selectedGender = 'male';
+                            selectedGender = 'Male';
                           });
                         },
                       ),
@@ -64,10 +64,10 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                         context,
                         icon: Icons.female,
                         label: 'Female',
-                        isSelected: selectedGender == 'female',
+                        isSelected: selectedGender == 'Female',
                         onTap: () {
                           setState(() {
-                            selectedGender = 'female';
+                            selectedGender = 'Female';
                           });
                         },
                       ),                    ),
