@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'advanced_settings_screen.dart';
+import 'progress_limitations_screen.dart';
 
 class WeightPaceScreen extends StatefulWidget {
   final String gender;
@@ -30,33 +30,89 @@ class WeightPaceScreen extends StatefulWidget {
 }
 
 class _WeightPaceScreenState extends State<WeightPaceScreen> {
-  double _pace = 0.8; // Default to recommended pace
+  late double _pace;
+  late double _minPace;
+  late double _maxPace;
+  late double _defaultPace;
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.isWeightInKg) {
+      _minPace = 0.1;
+      _maxPace = 1.5;
+      _defaultPace = 0.8;
+    } else {
+      _minPace = 0.2;
+      _maxPace = 3.0;
+      _defaultPace = 1.5;
+    }
+    _pace = _defaultPace;
+  }
 
   String _getPaceDescription() {
-    if (_pace <= 0.4) {
-      return 'Slow and steady';
-    } else if (_pace <= 1.0) {
-      return 'Recommended';
+    if (widget.isWeightInKg) {
+      if (_pace <= 0.4) {
+        return 'Slow and steady';
+      } else if (_pace <= 1.0) {
+        return 'Recommended';
+      } else {
+        return 'You may feel tired';
+      }
     } else {
-      return 'You may feel tired';
+      if (_pace <= 1.0) {
+        return 'Slow and steady';
+      } else if (_pace <= 2.0) {
+        return 'Recommended';
+      } else {
+        return 'You may feel tired';
+      }
     }
   }
 
   Color _getPaceColor() {
-    if (_pace <= 0.4) {
-      return Colors.green;
-    } else if (_pace <= 1.0) {
-      return Color(0xFFE18335); // Same orange as before
+    if (widget.isWeightInKg) {
+      if (_pace <= 0.4) {
+        return Colors.green;
+      } else if (_pace <= 1.0) {
+        return Color(0xFFE18335);
+      } else {
+        return Colors.red;
+      }
     } else {
-      return Colors.red;
+      if (_pace <= 1.0) {
+        return Colors.green;
+      } else if (_pace <= 2.0) {
+        return Color(0xFFE18335);
+      } else {
+        return Colors.red;
+      }
     }
+  }
+
+  String _getTargetDate() {
+    final double weightDifference = (widget.targetWeight - widget.weight).abs();
+    final int weeksNeeded = (weightDifference / _pace).ceil();
+    final DateTime targetDate = DateTime.now().add(Duration(days: weeksNeeded * 7));
+    
+    return '${targetDate.day} ${_getMonthName(targetDate.month)} ${targetDate.year}';
+  }
+
+  String _getMonthName(int month) {
+    const months = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    return months[month - 1];
   }
 
   @override
   Widget build(BuildContext context) {
     final bool isGaining = widget.targetWeight > widget.weight;
+    final String unit = widget.isWeightInKg ? 'kg' : 'lbs';
 
-    return Scaffold(      body: Container(
+    return Scaffold(
+      body: Container(
         color: Colors.white,
         child: SafeArea(
           child: Padding(
@@ -68,7 +124,6 @@ class _WeightPaceScreenState extends State<WeightPaceScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        // Title
                         const Text(
                           'Pick your pace - how fast should we go?',
                           textAlign: TextAlign.center,
@@ -81,7 +136,6 @@ class _WeightPaceScreenState extends State<WeightPaceScreen> {
 
                         const SizedBox(height: 16),
                         
-                        // Subtitle
                         Text(
                           '${isGaining ? "Gain" : "Lose"} weight pace per week',
                           textAlign: TextAlign.center,
@@ -94,9 +148,8 @@ class _WeightPaceScreenState extends State<WeightPaceScreen> {
 
                         const SizedBox(height: 48),
                         
-                        // Selected weight display
                         Text(
-                          '${_pace.toStringAsFixed(1)} kg',
+                          '${_pace.toStringAsFixed(1)} $unit',
                           style: TextStyle(
                             fontSize: 34,
                             fontWeight: FontWeight.bold,
@@ -106,86 +159,99 @@ class _WeightPaceScreenState extends State<WeightPaceScreen> {
 
                         const SizedBox(height: 24),
 
-                // Slider
-                SliderTheme(
-                  data: SliderTheme.of(context).copyWith(
-                    activeTrackColor: _getPaceColor(),
-                    inactiveTrackColor: Colors.grey[200],
-                    thumbColor: _getPaceColor(),
-                    overlayColor: _getPaceColor().withOpacity(0.2),                    trackHeight: 8.0, // Made thicker
-                  ),
-                  child: Slider(
-                    value: _pace,
-                    min: 0.1,
-                    max: 1.5,
-                    divisions: 14, // 0.1 increments
-                    label: '${_pace.toStringAsFixed(1)}kg',
-                    onChanged: (value) {
-                      setState(() {
-                        _pace = value;
-                      });
-                    },
-                  ),
-                ),
+                        SliderTheme(                          data: SliderTheme.of(context).copyWith(
+                            activeTrackColor: _getPaceColor(),
+                            inactiveTrackColor: Colors.grey[200],
+                            thumbColor: _getPaceColor(),
+                            overlayColor: _getPaceColor().withOpacity(0.2),
+                            trackHeight: 8.0,
+                            tickMarkShape: RoundSliderTickMarkShape(tickMarkRadius: 4),
+                            activeTickMarkColor: Colors.white,
+                            inactiveTickMarkColor: Colors.grey[400],
+                          ),
+                          child: Slider(                            value: _pace,
+                            min: _minPace,
+                            max: _maxPace,
+                            divisions: widget.isWeightInKg ? 14 : 28, // 14 for 0.1-1.5kg, 28 for 0.2-3.0lbs
+                            label: '${_pace.toStringAsFixed(1)} $unit',
+                            onChanged: (value) {
+                              setState(() {
+                                _pace = value;
+                              });
+                            },
+                          ),
+                        ),
 
-                const SizedBox(height: 8),
-                  // Pace values
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '0.1kg',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      '0.8kg',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Text(
-                      '1.5kg',
-                      style: TextStyle(
-                        color: Colors.grey[600],
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+                        const SizedBox(height: 8),
+                        
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              '${_minPace.toStringAsFixed(1)} $unit',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '${_defaultPace.toStringAsFixed(1)} $unit',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              '${_maxPace.toStringAsFixed(1)} $unit',
+                              style: TextStyle(
+                                color: Colors.grey[600],
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
 
-                const SizedBox(height: 32),                // Pace description container
-                Container(
-                  width: double.infinity, // Make it full width
-                  margin: const EdgeInsets.symmetric(horizontal: 16), // Add some margin
-                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
-                  decoration: BoxDecoration(
-                    color: _getPaceColor().withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: _getPaceColor(),
-                      width: 1,
-                    ),
-                  ),
-                  child: Text(
-                    _getPaceDescription(),
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w600,
-                      color: _getPaceColor(),
-                    ),
-                  ),
-                ),
+                        const SizedBox(height: 32),
+
+                        Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.symmetric(horizontal: 16),
+                          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                          decoration: BoxDecoration(
+                            color: _getPaceColor().withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                            border: Border.all(
+                              color: _getPaceColor(),
+                              width: 1,
+                            ),
+                          ),                          child: Column(
+                            children: [
+                              Text(
+                                _getPaceDescription(),
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w600,
+                                  color: _getPaceColor(),
+                                ),
+                              ),
+                              const SizedBox(height: 8),                              Text(
+                                'Target date: ${_getTargetDate()}',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ],
                     ),
                   ),
                 ),
 
-                // Navigation buttons
                 Row(
                   children: [
                     Expanded(
@@ -211,8 +277,7 @@ class _WeightPaceScreenState extends State<WeightPaceScreen> {
                         onPressed: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => AdvancedSettingsScreen(
+                            MaterialPageRoute(                              builder: (context) => ProgressLimitationsScreen(
                                 gender: widget.gender,
                                 weight: widget.weight,
                                 isWeightInKg: widget.isWeightInKg,

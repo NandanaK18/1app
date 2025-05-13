@@ -85,7 +85,7 @@ class _AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                     children: [
                       Expanded(
                         child: RadioListTile<bool>(
-                          title: const Text('No'),
+                          title: const Text('No', style: TextStyle(fontWeight: FontWeight.bold)),
                           value: false,
                           groupValue: isAthlete,
                           onChanged: (value) {
@@ -95,14 +95,14 @@ class _AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                           },
                         ),
                       ),
-                      Expanded(
+                        Expanded(
                         child: RadioListTile<bool>(
-                          title: const Text('Yes'),
+                          title: const Text('Yes', style: TextStyle(fontWeight: FontWeight.bold)),
                           value: true,
                           groupValue: isAthlete,
                           onChanged: (value) {
-                            setState(() {
-                              isAthlete = value!;
+                          setState(() {
+                            isAthlete = value!;
                             });
                           },
                         ),
@@ -132,7 +132,7 @@ class _AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                     children: [
                       Expanded(
                         child: RadioListTile<bool>(
-                          title: const Text('Skip'),
+                          title: const Text('Skip', style: TextStyle(fontWeight: FontWeight.bold)),
                           value: false,
                           groupValue: showBodyFatSlider,
                           onChanged: (value) {
@@ -144,7 +144,7 @@ class _AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                       ),
                       Expanded(
                         child: RadioListTile<bool>(
-                          title: const Text('Enter'),
+                          title: const Text('Enter', style: TextStyle(fontWeight: FontWeight.bold)),
                           value: true,
                           groupValue: showBodyFatSlider,
                           onChanged: (value) {
