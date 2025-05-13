@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'activity_level_screen.dart';
 
 class AgeSelectionScreen extends StatefulWidget {
   final String gender;
@@ -314,11 +315,22 @@ class _AgeSelectionScreenState extends State<AgeSelectionScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
-                      child: ElevatedButton(                        onPressed: () {
-                          // TODO: Navigate to the next screen or complete onboarding
-                          print('Selected birthdate: ${selectedDate.toString()}, Age: $ageYears years');
+                    const SizedBox(width: 16),                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => ActivityLevelScreen(
+                                gender: widget.gender,
+                                weight: widget.weight,
+                                isWeightInKg: widget.isWeightInKg,
+                                height: widget.height,
+                                isHeightInCm: widget.isHeightInCm,
+                                birthDate: selectedDate,
+                                age: ageYears,
+                              ),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
