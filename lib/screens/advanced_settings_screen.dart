@@ -17,36 +17,40 @@ class _AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,      appBar: AppBar(
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.white,
-        title: const Text(
-          'Advanced Settings',
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
-      ),
+      backgroundColor: Colors.white,      appBar: null,
       body: Stack(
         children: [
           SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
+            padding: const EdgeInsets.all(24.0),            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [                const Text(
+              children: [
+                const SizedBox(height: 60),
+                
+                // Title text
+                const Text(
+                  'Advanced Settings',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                  ),
+                ),
+                
+                const SizedBox(height: 22),
+                
+                const Text(
                   'Fine-tune your macro distribution and calculation details',
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(fontSize: 16, color: Colors.black54),
                 ),
                 const SizedBox(height: 24),
+
 
                 // Athlete Toggle
                 Text(
                   'Are you an athlete?',
                   style: TextStyle(
                     fontSize: 16,
+                    fontWeight: FontWeight.bold,
                     color: Colors.black.withOpacity(0.8),
                   ),
                 ),
@@ -93,6 +97,7 @@ class _AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                   'Body Fat Percentage (Optional)',
                   style: TextStyle(
                     fontSize: 16,
+                    fontWeight: FontWeight.bold,
                     color: Colors.black.withOpacity(0.8),
                   ),
                 ),
@@ -201,6 +206,7 @@ class _AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                   'Protein (g per kg of bodyweight)',
                   style: TextStyle(
                     fontSize: 16,
+                    fontWeight: FontWeight.bold,
                     color: Colors.black.withOpacity(0.8),
                   ),
                 ),
@@ -271,6 +277,7 @@ class _AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                   'Fat (% of total calories)',
                   style: TextStyle(
                     fontSize: 16,
+                    fontWeight: FontWeight.bold,
                     color: Colors.black.withOpacity(0.8),
                   ),
                 ),
@@ -361,7 +368,7 @@ class _AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                       onPressed: () => Navigator.pop(context),
                       style: TextButton.styleFrom(
                         backgroundColor: Colors.grey[200],
-                        padding: const EdgeInsets.symmetric(vertical: 16), //make change here
+                        padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(4),
                         ),
