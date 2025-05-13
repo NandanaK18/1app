@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'height_selection_screen.dart';
 
 class WeightSelectionScreen extends StatefulWidget {
   final String gender;
@@ -298,10 +299,16 @@ class _WeightSelectionScreenState extends State<WeightSelectionScreen> {
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // TODO: Navigate to the next screen
-                          print('Selected weight: ${weight.toStringAsFixed(1)} kg');
+                      child: ElevatedButton(                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => HeightSelectionScreen(
+                                gender: widget.gender,
+                                weight: weight,
+                                isWeightInKg: isKg,
+                              ),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
