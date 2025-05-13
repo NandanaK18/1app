@@ -5,6 +5,7 @@ import 'gender_selection_screen.dart';
 import 'goal_selection_screen.dart';
 import 'height_selection_screen.dart';
 import 'weight_selection_screen.dart';
+import 'results_screen.dart';
 
 class SummaryScreen extends StatelessWidget {
   final String gender;
@@ -346,9 +347,39 @@ class SummaryScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          // TODO: Navigate to results screen
+                      child: ElevatedButton(                        onPressed: () {
+                          double targetWeight = weight;
+                          double pace = 0.0;
+                          
+                          if (goal == 'Lose Weight') {
+                            targetWeight = weight - (isWeightInKg ? 10 : 22); // -10kg or -22lbs
+                            pace = isWeightInKg ? 0.8 : 1.5; // 0.8kg/week or 1.5lbs/week default
+                          } else if (goal == 'Gain Weight') {
+                            targetWeight = weight + (isWeightInKg ? 10 : 22); // +10kg or +22lbs
+                            pace = isWeightInKg ? 0.8 : 1.5; // 0.8kg/week or 1.5lbs/week default
+                          }
+                          
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ResultsScreen(
+                                gender: gender,
+                                weight: weight,
+                                isWeightInKg: isWeightInKg,
+                                height: height,
+                                isHeightInCm: isHeightInCm,
+                                age: age,
+                                activityLevel: activityLevel,
+                                goal: goal,
+                                proteinRatio: proteinRatio,
+                                fatRatio: fatRatio,
+                                targetWeight: targetWeight,
+                                pace: pace,
+                                isAthlete: isAthlete,
+                                bodyFatPercentage: bodyFatPercentage,
+                              ),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
