@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'weight_selection_screen.dart';
 
 class GenderSelectionScreen extends StatefulWidget {
   const GenderSelectionScreen({super.key});
@@ -92,13 +93,30 @@ class _GenderSelectionScreenState extends State<GenderSelectionScreen> {
                     ),
                     const SizedBox(width: 16),
                     Expanded(
-                      child: ElevatedButton(
-                        onPressed: selectedGender == null
+                      child: ElevatedButton(                        onPressed: selectedGender == null
                             ? null
-                            : () {                                // TODO: Navigate to the next screen
-                                print('Selected gender: $selectedGender');
+                            : () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => WeightSelectionScreen(
+                                      gender: selectedGender!,
+                                    ),
+                                  ),
+                                );
                               },
-                        child: const Text('Next'),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.black,
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 16),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                        ),
+                        child: const Text(
+                          'Next',
+                          style: TextStyle(fontWeight: FontWeight.w600),
+                        ),
                       ),
                     ),
                   ],
