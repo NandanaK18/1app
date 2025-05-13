@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'age_selection_screen.dart';
 
 class HeightSelectionScreen extends StatefulWidget {
   final String gender;
@@ -223,12 +224,20 @@ class _HeightSelectionScreenState extends State<HeightSelectionScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
+                    const SizedBox(width: 16),                    Expanded(
                       child: ElevatedButton(
                         onPressed: () {
-                          // TODO: Navigate to the next screen
-                          print('Selected height: ${height.round()} cm (${heightInFeetAndInches})');
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => AgeSelectionScreen(
+                                gender: widget.gender,
+                                weight: widget.weight,
+                                isWeightInKg: widget.isWeightInKg,
+                                height: height,
+                                isHeightInCm: isCm,
+                              ),
+                            ),
+                          );
                         },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: Colors.black,
