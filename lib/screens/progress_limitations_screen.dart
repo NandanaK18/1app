@@ -10,6 +10,8 @@ class ProgressLimitationsScreen extends StatefulWidget {
   final int age;
   final String activityLevel;
   final String goal;
+  final double targetWeight;
+  final double pace;
 
   const ProgressLimitationsScreen({
     super.key,
@@ -21,6 +23,8 @@ class ProgressLimitationsScreen extends StatefulWidget {
     required this.age,
     required this.activityLevel,
     required this.goal,
+    this.targetWeight = 0.0,
+    this.pace = 0.0,
   });
 
   @override
@@ -135,8 +139,7 @@ class _ProgressLimitationsScreenState extends State<ProgressLimitationsScreen> {
                       child: ElevatedButton(
                         onPressed: _selectedLimitation == null
                             ? null
-                            : () {
-                                Navigator.push(
+                            : () {                                Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) => AdvancedSettingsScreen(
@@ -148,6 +151,8 @@ class _ProgressLimitationsScreenState extends State<ProgressLimitationsScreen> {
                                       age: widget.age,
                                       activityLevel: widget.activityLevel,
                                       goal: widget.goal,
+                                      targetWeight: widget.targetWeight,
+                                      pace: widget.pace,
                                     ),
                                   ),
                                 );

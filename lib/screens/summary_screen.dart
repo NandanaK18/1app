@@ -20,6 +20,8 @@ class SummaryScreen extends StatelessWidget {
   final String goal;
   final double proteinRatio;
   final double fatRatio;
+  final double targetWeight;
+  final double pace;
 
   const SummaryScreen({
     Key? key,
@@ -35,6 +37,8 @@ class SummaryScreen extends StatelessWidget {
     required this.goal,
     required this.proteinRatio,
     required this.fatRatio,
+    this.targetWeight = 0.0,
+    this.pace = 0.0,
   }) : super(key: key);
   void _handleEditTap(String label, BuildContext context) {    switch (label) {
       case 'Gender':
@@ -348,15 +352,22 @@ class SummaryScreen extends StatelessWidget {
                     const SizedBox(width: 16),
                     Expanded(
                       child: ElevatedButton(                        onPressed: () {
-                          double targetWeight = weight;
-                          double pace = 0.0;
+                          double finalTargetWeight = targetWeight;
+                          double finalPace = pace;
                           
-                          if (goal == 'Lose Weight') {
-                            targetWeight = weight - (isWeightInKg ? 10 : 22); // -10kg or -22lbs
-                            pace = isWeightInKg ? 0.8 : 1.5; // 0.8kg/week or 1.5lbs/week default
-                          } else if (goal == 'Gain Weight') {
-                            targetWeight = weight + (isWeightInKg ? 10 : 22); // +10kg or +22lbs
-                            pace = isWeightInKg ? 0.8 : 1.5; // 0.8kg/week or 1.5lbs/week default
+                          // If targetWeight and pace weren't set in the flow (e.g., for Maintain Weight), calculate default values
+                          if (finalTargetWeight == 0.0) {
+                            if (goal == 'Lose Weight') {
+                              finalTargetWeight = weight - (isWeightInKg ? 10 : 22); // -10kg or -22lbs
+                            } else if (goal == 'Gain Weight') {
+                              finalTargetWeight = weight + (isWeightInKg ? 10 : 22); // +10kg or +22lbs
+                            } else {
+                              finalTargetWeight = weight; // Maintain weight
+                            }
+                          }
+                          
+                          if (finalPace == 0.0 && goal != 'Maintain Weight') {
+                            finalPace = isWeightInKg ? 0.8 : 1.5; // 0.8kg/week or 1.5lbs/week default
                           }
                           
                           Navigator.push(
@@ -373,8 +384,8 @@ class SummaryScreen extends StatelessWidget {
                                 goal: goal,
                                 proteinRatio: proteinRatio,
                                 fatRatio: fatRatio,
-                                targetWeight: targetWeight,
-                                pace: pace,
+                                targetWeight: finalTargetWeight,
+                                pace: finalPace,
                                 isAthlete: isAthlete,
                                 bodyFatPercentage: bodyFatPercentage,
                               ),

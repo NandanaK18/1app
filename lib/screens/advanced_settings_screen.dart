@@ -10,6 +10,8 @@ class AdvancedSettingsScreen extends StatefulWidget {
   final int age;
   final String activityLevel;
   final String goal;
+  final double targetWeight;
+  final double pace;
 
   const AdvancedSettingsScreen({
     Key? key,
@@ -21,6 +23,8 @@ class AdvancedSettingsScreen extends StatefulWidget {
     required this.age,
     required this.activityLevel,
     required this.goal,
+    this.targetWeight = 0.0,
+    this.pace = 0.0,
   }) : super(key: key);
 
   @override
@@ -404,8 +408,7 @@ class _AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                   ),
                   const SizedBox(width: 16),
                   Expanded(                    child: ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
+                      onPressed: () {                        Navigator.push(
                           context,
                           MaterialPageRoute(
                             builder: (context) => SummaryScreen(
@@ -421,6 +424,8 @@ class _AdvancedSettingsScreenState extends State<AdvancedSettingsScreen> {
                               goal: widget.goal,
                               proteinRatio: proteinRatio,
                               fatRatio: fatPercentage,
+                              targetWeight: widget.targetWeight,
+                              pace: widget.pace,
                             ),
                           ),
                         );

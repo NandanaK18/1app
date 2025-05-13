@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'results_screen.dart';
+import 'progress_limitations_screen.dart';
 
 class WeightPaceScreen extends StatefulWidget {
   final String gender;
@@ -271,13 +271,12 @@ class _WeightPaceScreenState extends State<WeightPaceScreen> {
                         ),
                       ),
                     ),
-                    const SizedBox(width: 16),
-                    Expanded(
+                    const SizedBox(width: 16),                    Expanded(
                       child: ElevatedButton(
                         onPressed: () {                          Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => ResultsScreen(
+                              builder: (context) => ProgressLimitationsScreen(
                                 gender: widget.gender,
                                 weight: widget.weight,
                                 isWeightInKg: widget.isWeightInKg,
@@ -288,9 +287,6 @@ class _WeightPaceScreenState extends State<WeightPaceScreen> {
                                 goal: widget.goal,
                                 targetWeight: widget.targetWeight,
                                 pace: _pace,
-                                proteinRatio: 1.8, // Default value, modify if needed
-                                fatRatio: 25.0, // Default value, modify if needed
-                                isAthlete: false, // Default value, modify if needed
                               ),
                             ),
                           );
