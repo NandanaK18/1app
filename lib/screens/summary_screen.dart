@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'activity_level_screen.dart';
+import 'age_selection_screen.dart';
+import 'gender_selection_screen.dart';
+import 'goal_selection_screen.dart';
+import 'height_selection_screen.dart';
+import 'weight_selection_screen.dart';
 
 class SummaryScreen extends StatelessWidget {
   final String gender;
@@ -29,7 +35,86 @@ class SummaryScreen extends StatelessWidget {
     required this.proteinRatio,
     required this.fatRatio,
   }) : super(key: key);
-  Widget _buildInfoItem(String label, String value) {
+  void _handleEditTap(String label, BuildContext context) {    switch (label) {
+      case 'Gender':
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GenderSelectionScreen(),
+          ),
+        );
+        break;
+      case 'Weight':
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => WeightSelectionScreen(gender: gender),
+          ),
+        );
+        break;
+      case 'Height':
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => HeightSelectionScreen(
+              gender: gender,
+              weight: weight,
+              isWeightInKg: isWeightInKg,
+            ),
+          ),
+        );
+        break;
+      case 'Age':
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => AgeSelectionScreen(
+              gender: gender,
+              weight: weight,
+              isWeightInKg: isWeightInKg,
+              height: height,
+              isHeightInCm: isHeightInCm,
+            ),
+          ),
+        );
+        break;
+      case 'Activity Level':
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ActivityLevelScreen(
+              gender: gender,
+              weight: weight,
+              isWeightInKg: isWeightInKg,
+              height: height,
+              isHeightInCm: isHeightInCm,
+              birthDate: DateTime.now().subtract(Duration(days: age * 365)),
+              age: age,
+            ),
+          ),
+        );
+        break;
+      case 'Goal':
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GoalSelectionScreen(
+              gender: gender,
+              weight: weight,
+              isWeightInKg: isWeightInKg,
+              height: height,
+              isHeightInCm: isHeightInCm,
+              birthDate: DateTime.now().subtract(Duration(days: age * 365)),
+              age: age,
+              activityLevel: activityLevel,
+            ),
+          ),
+        );
+        break;
+    }
+  }
+
+  Widget _buildInfoItem(BuildContext context, String label, String value) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,10 +137,15 @@ class SummaryScreen extends StatelessWidget {
                 color: Colors.black,
               ),
             ),
-            const Icon(
-              Icons.edit,
-              size: 16,
-              color: Colors.blue,
+            GestureDetector(
+              onTap: () {
+                _handleEditTap(label, context);
+              },
+              child: const Icon(
+                Icons.edit,
+                size: 16,
+                color: Colors.black,
+              ),
             ),
           ],
         ),
@@ -72,7 +162,7 @@ class SummaryScreen extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 16),
       decoration: BoxDecoration(
-        color: Colors.grey[200],
+        color: Colors.grey[100],
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -160,22 +250,26 @@ class SummaryScreen extends StatelessWidget {
                   _buildSectionCard(
                     'Personal Information',
                     [
-                      _buildInfoItem('Gender', gender),
+                      _buildInfoItem(context, 'Gender', gender),
                       _buildInfoItem(
+                        context,
                         'Weight',
                         '${weight.toStringAsFixed(1)} ${isWeightInKg ? 'kg' : 'lbs'}',
                       ),
                       _buildInfoItem(
+                        context,
                         'Height',
                         '${height.toStringAsFixed(0)} ${isHeightInCm ? 'cm' : 'in'}',
                       ),
-                      _buildInfoItem('Age', '$age years'),
+                      _buildInfoItem(context, 'Age', '$age years'),
                       _buildInfoItem(
+                        context,
                         'Athletic Status',
                         isAthlete ? 'Athlete' : 'Non-Athlete',
                       ),
                       if (bodyFatPercentage != null)
                         _buildInfoItem(
+                          context,
                           'Body Fat %',
                           '${bodyFatPercentage!.toStringAsFixed(0)}%',
                         ),
@@ -186,8 +280,8 @@ class SummaryScreen extends StatelessWidget {
                   _buildSectionCard(
                     'Activity & Goals',
                     [
-                      _buildInfoItem('Activity Level', _formatActivityLevel(activityLevel)),
-                      _buildInfoItem('Goal', goal),
+                      _buildInfoItem(context, 'Activity Level', _formatActivityLevel(activityLevel)),
+                      _buildInfoItem(context, 'Goal', goal),
                     ],
                   ),
 
@@ -196,14 +290,16 @@ class SummaryScreen extends StatelessWidget {
                     'Macro Settings',
                     [
                       _buildInfoItem(
+                        context,
                         'Protein Ratio',
                         '${proteinRatio.toStringAsFixed(1)} g/kg',
                       ),
                       _buildInfoItem(
+                        context,
                         'Fat Ratio',
                         '${fatRatio.toStringAsFixed(0)}% of calories',
                       ),
-                      _buildInfoItem('Carbs', 'Calculated'),
+                      _buildInfoItem(context, 'Carbs', 'Calculated'),
                     ],
                   ),
 
