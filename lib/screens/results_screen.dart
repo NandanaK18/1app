@@ -197,16 +197,7 @@ class ResultsScreen extends StatelessWidget {
             padding: const EdgeInsets.all(24.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Success indicator and message
-                const Center(
-                  child: Icon(
-                    Icons.check_circle,
-                    color: Colors.black,
-                    size: 54,
-                  ),
-                ),
-                const SizedBox(height: 14),
+              children: [                // Success message
                 const Text(
                   'Awesome!\n We\'ve built your Personal Nutrition Plan!',
                   textAlign: TextAlign.center,
