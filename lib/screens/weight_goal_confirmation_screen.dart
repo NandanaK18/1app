@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'advanced_settings_screen.dart';
 import 'weight_pace_screen.dart';
 
 class WeightGoalConfirmationScreen extends StatelessWidget {

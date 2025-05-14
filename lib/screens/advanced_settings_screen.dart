@@ -14,7 +14,7 @@ class AdvancedSettingsScreen extends StatefulWidget {
   final double pace;
 
   const AdvancedSettingsScreen({
-    Key? key,
+    super.key,
     required this.gender,
     required this.weight,
     required this.isWeightInKg,
@@ -25,7 +25,7 @@ class AdvancedSettingsScreen extends StatefulWidget {
     required this.goal,
     this.targetWeight = 0.0,
     this.pace = 0.0,
-  }) : super(key: key);
+  });
 
   @override
   State<AdvancedSettingsScreen> createState() => _AdvancedSettingsScreenState();

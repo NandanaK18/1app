@@ -24,7 +24,7 @@ class SummaryScreen extends StatelessWidget {
   final double pace;
 
   const SummaryScreen({
-    Key? key,
+    super.key,
     required this.gender,
     required this.weight,
     required this.isWeightInKg,
@@ -39,7 +39,7 @@ class SummaryScreen extends StatelessWidget {
     required this.fatRatio,
     this.targetWeight = 0.0,
     this.pace = 0.0,
-  }) : super(key: key);
+  });
   void _handleEditTap(String label, BuildContext context) {    switch (label) {
       case 'Gender':
         Navigator.pushReplacement(

@@ -37,7 +37,7 @@ class _ProgressLimitationsScreenState extends State<ProgressLimitationsScreen> {
   final List<String> _limitations = [
     'Lack of Consistency',
     'Poor Nutrition Habits',
-    'Lack of SUpport',
+    'Lack of Support',
     'Busy Schedule',
     'Lack of a Structured Plan',
   ];

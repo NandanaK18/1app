@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'dashboard_screen.dart';
 
 class ResultsScreen extends StatelessWidget {
   final String gender;
@@ -18,7 +19,7 @@ class ResultsScreen extends StatelessWidget {
   final double? bodyFatPercentage;
 
   const ResultsScreen({
-    Key? key,
+    super.key,
     required this.gender,
     required this.weight,
     required this.isWeightInKg,
@@ -33,7 +34,7 @@ class ResultsScreen extends StatelessWidget {
     required this.fatRatio,
     required this.isAthlete,
     this.bodyFatPercentage,
-  }) : super(key: key);
+  });
 
   // BMR calculation using Mifflin-St Jeor formula
   double _calculateBMR() {
@@ -187,9 +188,15 @@ class ResultsScreen extends StatelessWidget {
     final macros = _calculateMacros();
     final targetDate = _getTargetDate();
     final weightDiff = (targetWeight - weight).abs();
-    final String unit = isWeightInKg ? 'kg' : 'lbs';
-
-    return Scaffold(
+    final String unit = isWeightInKg ? 'kg' : 'lbs';    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: Container(
         color: Colors.white,
         child: SafeArea(
@@ -207,7 +214,7 @@ class ResultsScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                const SizedBox(height: 22),                // Goal text
+                const SizedBox(height: 12),                // Goal text
                 Center(
                   child: Text(
                     goal == 'Maintain Weight'
@@ -297,9 +304,39 @@ class ResultsScreen extends StatelessWidget {
                       macros['carbs']!,
                       'g',
                       Colors.green,
-                      macros['carbs']! / (macros['protein']! + macros['fat']! + macros['carbs']!),
-                    ),
+                      macros['carbs']! / (macros['protein']! + macros['fat']! + macros['carbs']!),                    ),
                   ],
+                ),
+                const Spacer(),
+                // Let's get going button
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => DashboardScreen(
+                            macros: macros,
+                          ),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.black,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    child: const Text(
+                      "Let's get going!",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
