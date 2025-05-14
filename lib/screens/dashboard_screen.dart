@@ -24,7 +24,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
-          'My Dashboard',
+          'Today\'s Requirements',
           style: TextStyle(
             color: Colors.black,
             fontWeight: FontWeight.bold,
