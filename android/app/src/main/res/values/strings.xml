@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Nutrition Tracker</string>
+    <!-- Replace with your actual Google OAuth client ID -->
+    <string name="server_client_id">1092374278977-uf41bp3tqhrd45738gcb5n9dhuhlm889.apps.googleusercontent.com</string>
+</resources>

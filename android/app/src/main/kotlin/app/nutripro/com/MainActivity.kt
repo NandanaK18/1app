@@ -1,4 +1,4 @@
-package com.example.flutter_application_1
+package app.nutripro.com
 
 import io.flutter.embedding.android.FlutterActivity
 

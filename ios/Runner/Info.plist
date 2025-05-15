@@ -42,8 +42,20 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
+	<true/>	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
-	<key>UIApplicationSupportsIndirectInputEvents</key>
-	<true/>
+	<!-- Google Sign-in Section -->
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>			<key>CFBundleURLSchemes</key>
+			<array>
+				<!-- Reversed client ID for iOS Google Sign-In -->
+				<string>com.googleusercontent.apps.1092374278977-uf41bp3tqhrd45738gcb5n9dhuhlm889</string>
+			</array>
+		</dict>
+	</array>
+	<!-- End of Google Sign-in Section -->
 </dict>
 </plist>

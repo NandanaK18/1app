@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/auth_service.dart';
+import '../widgets/google_sign_in_button.dart';
 import 'onboarding_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -8,11 +10,14 @@ class LoginScreen extends StatefulWidget {
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {  final _formKey = GlobalKey<FormState>();
+class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
   final _nameController = TextEditingController(text: 'John Doe');
   final _emailController = TextEditingController(text: 'test@example.com');
   final _passwordController = TextEditingController(text: 'password123');
   final _confirmPasswordController = TextEditingController(text: 'password123');
+  
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -103,18 +108,55 @@ class _LoginScreenState extends State<LoginScreen> {  final _formKey = GlobalKey
                     return null;
                   },
                 ),
-                const SizedBox(height: 32),                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // Navigate to the onboarding screen
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const OnboardingScreen(),
-                        ),
-                      );
-                    }
-                  },
+                const SizedBox(height: 32),   
+                ElevatedButton(                  onPressed: _isLoading 
+                    ? null 
+                    : () async {
+                        if (_formKey.currentState!.validate()) {
+                          setState(() {
+                            _isLoading = true;
+                          });
+                            try {
+                            // Sign up with email and password using Supabase
+                            final email = _emailController.text.trim();
+                            final password = _passwordController.text.trim();
+                            
+                            await authService.signUpWithEmail(
+                              email: email,
+                              password: password,
+                              userData: {
+                                'full_name': _nameController.text.trim(),
+                              },
+                            );
+                            
+                            // Navigate to the onboarding screen
+                            if (!mounted) return;
+                            
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const OnboardingScreen(),
+                              ),
+                            );
+                          } catch (e) {
+                            // Show error message
+                            if (!mounted) return;
+                            
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text('Error: ${e.toString()}'),
+                                backgroundColor: Colors.red,
+                              ),
+                            );
+                          } finally {
+                            if (mounted) {
+                              setState(() {
+                                _isLoading = false;
+                              });
+                            }
+                          }
+                        }
+                      },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.black,
                     foregroundColor: Colors.white,
@@ -130,6 +172,30 @@ class _LoginScreenState extends State<LoginScreen> {  final _formKey = GlobalKey
                       fontWeight: FontWeight.w600,
                     ),
                   ),
+                ),                const SizedBox(height: 24),
+                Row(
+                  children: [
+                    const Expanded(
+                      child: Divider(color: Colors.black38),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        'OR',
+                        style: TextStyle(
+                          color: Colors.black54,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                    const Expanded(
+                      child: Divider(color: Colors.black38),
+                    ),
+                  ],
+                ),                const SizedBox(height: 24),
+                GoogleSignInButton(
+                  onPressed: _handleGoogleSignIn,
+                  isLoading: _isLoading,
                 ),
                 const SizedBox(height: 16),
                 Row(
@@ -161,6 +227,54 @@ class _LoginScreenState extends State<LoginScreen> {  final _formKey = GlobalKey
         ),
       ),
     );
+  }  // Method to handle Google Sign In
+  Future<void> _handleGoogleSignIn() async {
+    setState(() {
+      _isLoading = true;
+    });
+    
+    try {
+      // Use the auth service to sign in with Google
+      final response = await authService.signInWithGoogle();
+      
+      // Check if the sign-in was successful
+      if (response != null && response.user != null) {
+        // Navigate to the onboarding screen
+        if (!mounted) return;
+        
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const OnboardingScreen(),
+          ),
+        );
+      } else if (response == null) {
+        // User canceled the sign-in, don't show error
+        return;
+      }
+    } catch (e) {
+      // Handle any errors
+      if (!mounted) return;
+      
+      // Create a more user-friendly error message
+      String errorMessage = 'Failed to sign in with Google. Please try again.';
+      
+      // Add more detailed message for debugging in development
+      print('Google Sign-In Error Details: ${e.toString()}');
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(errorMessage),
+          backgroundColor: Colors.red,
+        ),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
   }
   Widget _buildTextField({
     required TextEditingController controller,
